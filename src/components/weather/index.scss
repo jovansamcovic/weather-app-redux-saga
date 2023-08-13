@@ -1,0 +1,35 @@
+.day-weather {
+  padding: 10px;
+}
+
+.day {
+  background-image: linear-gradient(#57585c, #636468);
+  width: 100%;
+  height: 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  font-size: 25px;
+  border-radius: 5px;
+
+  &+& {
+    margin-top: 10px;
+  }
+
+  &__weather {
+    margin-left: 50px;
+  }
+}
+
+.weather {
+  width: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: end;
+
+  &__description {
+    font-size: 12px;
+  }
+}

@@ -1,0 +1,30 @@
+.progress {
+  margin-top: 5px;
+  padding: 5px 20px;
+  position: relative;
+  border-radius: 20px;
+
+  width: 100%;
+  height: 20px;
+  box-shadow: inset 0 0 5px 1px #161616;
+  position: relative;
+  transition: all .2s ease;
+
+  &__value {
+    height: 14px;
+    border-radius: 20px;
+    left: 3px;
+    top: 3px;
+    position: absolute;
+    background-color: #f39c07;
+    transition: all 0.2s ease-in-out;
+  }
+}
+
+.reload-data {
+  padding: 10px;
+
+  &__title {
+    font-size: 12px;
+  }
+}
