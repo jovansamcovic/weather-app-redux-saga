@@ -10,6 +10,7 @@ const initialState = {
     status: false,
     message: ""
   },
+  refreshDataIndicator: 1
 };
 
 const reducer = (state = initialState, action: any) => {
@@ -20,6 +21,7 @@ const reducer = (state = initialState, action: any) => {
         currentWeather: action.data.main.temp,
         currentLocation: action.data.name,
         isLoading: false,
+        refreshDataIndicator: state.refreshDataIndicator * (-1)
       }
     case FETCH_CURRENT_WEATHER_FAILURE:
       return {

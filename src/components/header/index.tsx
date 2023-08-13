@@ -1,13 +1,33 @@
 import React, { useEffect, useState } from "react";
 import './index.scss';
 import moment from 'moment';
+import { useSelector } from "react-redux";
+import { getRefreshDataIndicator } from "../../selectors";
+import Loader from "../loader";
 
 interface HeaderProp {
   currentWeather: string,
-  location: string
+  location: string,
+  refreshDataIndicator: number,
+  isLoading: boolean
 }
 
-const Header: React.FC<HeaderProp> = ({ currentWeather, location }) => {
+interface AppState {
+  appReducer: {
+    currentWeather: string;
+    currentLocation: string,
+    list: [],
+    isLoading: string,
+    error: {
+      status: boolean,
+      message: string
+    },
+    refreshDataIndicator: number
+  };
+}
+
+
+const Header: React.FC<HeaderProp> = ({ currentWeather, location, refreshDataIndicator, isLoading }) => {
 
   const [currentTime, setCurrentTime] = useState(moment().format('HH:mm:ss'));
 
@@ -17,6 +37,16 @@ const Header: React.FC<HeaderProp> = ({ currentWeather, location }) => {
     return celsius.toFixed(1).toString();
   }
 
+  useEffect(() => {
+
+    const weather = document.getElementsByClassName("header__weather")[0];
+    weather?.classList.add("pulse-element");
+
+    setTimeout(() => {
+      weather.classList.remove("pulse-element");
+    }, 1000);
+
+  }, [refreshDataIndicator])
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -31,7 +61,7 @@ const Header: React.FC<HeaderProp> = ({ currentWeather, location }) => {
 
   return (
     <div className="header">
-      <div className="header__location">{location}</div>
+      <div className="header__location">{isLoading ? <Loader width="20px" height="20px" /> : location}</div>
       <div className="header__time">
         <div className="circles">
           <span className="circle"></span>
@@ -46,7 +76,8 @@ const Header: React.FC<HeaderProp> = ({ currentWeather, location }) => {
         </div>
       </div>
       <div className="header__weather">
-        {currentWeather ? kelvinToCelsius(currentWeather) + "°" : "Weather data not available"}
+        {isLoading && <Loader width="20px" height="20px" />}
+        {!isLoading && currentWeather ? kelvinToCelsius(currentWeather) + "°" : ""}
       </div>
     </div>
   );

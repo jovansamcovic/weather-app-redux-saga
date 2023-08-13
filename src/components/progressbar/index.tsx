@@ -8,7 +8,7 @@ interface AppState {
     currentWeather: string;
     currentLocation: string,
     list: [],
-    isLoading: string,
+    isLoading: boolean,
     error: {
       status: boolean,
       message: string
@@ -19,7 +19,7 @@ interface AppState {
 const ProgressBar = () => {
 
   const [progressValue, setProgressValue] = useState(0);
-  const [seconds, setSeconds] = useState(20);
+  const [seconds, setSeconds] = useState(60);
   let intervalSeconds: NodeJS.Timer | null = null;
   let intervalProgress: NodeJS.Timer | null = null
 
@@ -32,23 +32,23 @@ const ProgressBar = () => {
     intervalSeconds = setInterval(() => {
 
       setSeconds((prevValue) => {
-        if (prevValue > 1) {
-          return prevValue - 1;
+        if (prevValue > 0.1) {
+          return prevValue - 0.10;
         } else {
-          return 20;
+          return 60;
         }
       },);
 
       setProgressValue((prevValue) => {
-        if (prevValue + 5 < 100) {
-          return prevValue + 5;
+        if (prevValue + (100 / 60 / 10) < 100) {
+          return prevValue + (100 / 60 / 10);
         } else {
           return 0;
         }
       })
 
 
-    }, 1000)
+    }, 100)
 
     return intervalSeconds;
   };
@@ -78,7 +78,7 @@ const ProgressBar = () => {
 
   return (
     <div className="reload-data">
-      <span className='reload-data__title'>Reloading in {seconds}</span>
+      <span className='reload-data__title'>Reloading in {Math.floor(seconds)}</span>
       <div className="progress">
         <div className="progress__value" style={{ width: `${progressValue}%` }}></div>
 

@@ -5,18 +5,19 @@ import './App.scss';
 import Header from './components/header';
 import ProgressBar from './components/progressbar';
 import Weather from './components/weather';
-import { getCurrentLocation, getCurrentWeather, getError, getWeatherList, isLoading } from './selectors';
+import { getCurrentLocation, getCurrentWeather, getError, getRefreshDataIndicator, getWeatherList, isLoading } from './selectors';
 
 interface AppState {
   appReducer: {
     currentWeather: string;
     currentLocation: string,
     list: [],
-    isLoading: string,
+    isLoading: boolean,
     error: {
       status: boolean,
       message: string
     }
+    refreshDataIndicator: number
   };
 }
 
@@ -30,7 +31,7 @@ function App() {
       setSeconds((prevSeconds) => {
         let newSec = prevSeconds;
 
-        if (newSec > 19) {
+        if (newSec > 59) {
           dispatch(fetchCurrentWeatherRequest());
           dispatch(fetchWeatherListRequest());
           newSec = 0;
@@ -45,6 +46,17 @@ function App() {
     return interval;
   };
 
+
+  const Selectors = {
+    getCurrentWeather: useSelector((state: AppState) => getCurrentWeather(state)),
+    getCurrentLocation: useSelector((state: AppState) => getCurrentLocation(state)),
+    getWeatherList: useSelector((state: AppState) => getWeatherList(state)),
+    isLoading: useSelector((state: AppState) => isLoading(state)),
+    getError: useSelector((state: AppState) => getError(state)),
+    getRefreshDataIndicator: useSelector((state: AppState) => getRefreshDataIndicator(state))
+  }
+
+
   useEffect(() => {
     dispatch(fetchCurrentWeatherRequest());
     dispatch(fetchWeatherListRequest());
@@ -55,18 +67,16 @@ function App() {
     }
   }, [dispatch])
 
-  const Selectors = {
-    getCurrentWeather: useSelector((state: AppState) => getCurrentWeather(state)),
-    getCurrentLocation: useSelector((state: AppState) => getCurrentLocation(state)),
-    getWeatherList: useSelector((state: AppState) => getWeatherList(state)),
-    isLoading: useSelector((state: AppState) => isLoading(state)),
-    getError: useSelector((state: AppState) => getError(state)),
-  }
 
   return (
     <div className="App">
       <header>
-        <Header currentWeather={Selectors.getCurrentWeather} location={Selectors.getCurrentLocation} />
+        <Header
+          currentWeather={Selectors.getCurrentWeather}
+          location={Selectors.getCurrentLocation}
+          refreshDataIndicator={Selectors.getRefreshDataIndicator}
+          isLoading={Selectors.isLoading}
+        />
       </header>
       <main>
         <ProgressBar />
