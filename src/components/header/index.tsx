@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import './index.scss';
 import moment from 'moment';
-import { useSelector } from "react-redux";
-import { getRefreshDataIndicator } from "../../selectors";
 import Loader from "../loader";
 
 interface HeaderProp {
@@ -10,20 +8,6 @@ interface HeaderProp {
   location: string,
   refreshDataIndicator: number,
   isLoading: boolean
-}
-
-interface AppState {
-  appReducer: {
-    currentWeather: string;
-    currentLocation: string,
-    list: [],
-    isLoading: string,
-    error: {
-      status: boolean,
-      message: string
-    },
-    refreshDataIndicator: number
-  };
 }
 
 
